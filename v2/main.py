@@ -167,14 +167,16 @@ def main() -> None:
                     print(f"- {c['nombre']} | {c['email']}")
 
         elif opcion == 9:
-            print("\n--- Realizar compra (bloque 1: carrito + total) ---")
+            print("\n--- Realizar compra ---")
 
             nombre_cliente = pedir_texto("Nombre del cliente: ")
 
             carrito: dict[str, int] = {}
 
+            # ---- Bloque 1: construir carrito con validación inmediata de stock ----
             while True:
                 nombre_producto = input("Nombre del producto (o 'salir' para terminar): ").strip()
+
                 if not nombre_producto:
                     print("Error: el nombre del producto no puede estar vacío.")
                     continue
@@ -182,10 +184,29 @@ def main() -> None:
                 if nombre_producto.casefold() == "salir":
                     break
 
-                cantidad = pedir_int("Cantidad: ", min_val=1)
+                producto = tienda.buscar_producto(nombre_producto)
+                if producto is None:
+                    print("Producto no encontrado.")
+                    continue
 
-                # Si el producto ya estaba en el carrito, acumulamos
-                carrito[nombre_producto] = carrito.get(nombre_producto, 0) + cantidad
+                nombre_real = producto["nombre"]
+                stock_disponible = producto["cantidad"]
+
+                ya_en_carrito = carrito.get(nombre_real, 0)
+
+                stock_restante = stock_disponible - ya_en_carrito
+
+                if stock_restante <= 0:
+                    print(f"No queda stock disponible de '{nombre_real}' (ya tienes {ya_en_carrito} en el carrito).")
+                    continue
+
+                cantidad = pedir_int(
+                    f"Cantidad (disponible ahora: {stock_restante}): ",
+                    min_val=1,
+                    max_val=stock_restante
+                )
+
+                carrito[nombre_real] = ya_en_carrito + cantidad
 
             ok, total, detalle, mensaje = tienda.realizar_compra(nombre_cliente, carrito)
             print(mensaje)
@@ -195,20 +216,16 @@ def main() -> None:
                 print("Detalle:")
                 for nombre, info in detalle.items():
                     print(f"- {nombre} | Cantidad: {info['cantidad']} | Precio: {info['precio']}")
-                    
-                # ---- Bloque 2: pago + registro ----
+
                 cantidad_entregada = pedir_float("Cantidad entregada por el cliente: ", min_val=0)
 
                 ok_pago, cambio, mensaje_pago = tienda.procesar_pago(total, cantidad_entregada)
                 print(mensaje_pago)
 
                 if ok_pago:
-                    ok_registro, mensaje_registro = tienda.registrar_compra(
-                        nombre_cliente, detalle, total
-                    )
+                    ok_registro, mensaje_registro = tienda.registrar_compra(nombre_cliente, detalle, total)
                     print(mensaje_registro)
                     print(f"Cambio: {cambio:.2f} €")
-
 
         elif opcion == 10:
             print("\n--- Compras de un cliente ---")
