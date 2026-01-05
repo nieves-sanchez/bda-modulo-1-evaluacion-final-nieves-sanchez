@@ -82,37 +82,37 @@ python v2/main.py
 
 ## Funcionalidades
 
-Menú por consola:
+### Menú por consola
 
-Añadir / actualizar producto
+1) Añadir / actualizar producto
 
-Ver inventario
+2) Ver inventario
 
-Buscar producto
+3) Buscar producto
 
-Actualizar stock
+4) Actualizar stock
 
-Eliminar producto
+5) Eliminar producto
 
-Calcular valor del inventario
+6) Calcular valor del inventario
 
-Añadir cliente
+7) Añadir cliente
 
-Ver clientes
+8) Ver clientes
 
-Realizar compra (carrito + pago + registro)
+9) Realizar compra (carrito + pago + registro)
 
-Ver compras de un cliente
+10) Ver compras de un cliente
 
-Flujo de compra (resumen)
+### Flujo de compra (resumen)
 
-La UI (main) construye el carrito (productos y cantidades).
+- La UI (main) construye el carrito (productos y cantidades).
 
-TiendaOnline.realizar_compra() valida cliente, productos y stock, calcula total y descuenta stock.
+- TiendaOnline.realizar_compra() valida cliente, productos y stock, calcula total y descuenta stock.
 
-La UI pide la cantidad entregada y llama a procesar_pago().
+- La UI pide la cantidad entregada y llama a procesar_pago().
 
-Si el pago es correcto, se registra la compra en el historial del cliente con registrar_compra().
+- Si el pago es correcto, se registra la compra en el historial del cliente con registrar_compra().
 
 ## Mejoras futuras (ideas)
 
