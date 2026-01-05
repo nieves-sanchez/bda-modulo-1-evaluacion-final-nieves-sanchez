@@ -76,8 +76,11 @@ Desde la raíz del repositorio:
 
 ```bash
 python v2/main.py
+```
 
-Funcionalidades
+---
+
+## Funcionalidades
 
 Menú por consola:
 
@@ -110,7 +113,6 @@ TiendaOnline.realizar_compra() valida cliente, productos y stock, calcula total 
 La UI pide la cantidad entregada y llama a procesar_pago().
 
 Si el pago es correcto, se registra la compra en el historial del cliente con registrar_compra().
-```
 
 ## Mejoras futuras (ideas)
 
